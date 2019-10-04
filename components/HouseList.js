@@ -9,6 +9,10 @@ import {
 } from 'react-native';
 
 import { withNavigation } from 'react-navigation';
+import { useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
+
 
 class HouseList extends React.Component {
   state = {
@@ -24,47 +28,88 @@ class HouseList extends React.Component {
   }
 
   renderItem = ({ item }) => {
-    const { navigation, data } = this.props;
+    const { navigation } = this.props;
     return (
       <TouchableOpacity
         style={styles.itemContainer}
         onPress={() => {
-          /* TODO: Navigate to the Details route with params */
-          navigation.navigate('Detail', {/* props go here */});
+          navigation.navigate('Detail', {});
         }}
       >
         <View style={styles.itemInfoContainer}>
           <View style={styles.itemTitleContainer}>
-            <Text style={styles.itemTitleText}/* TODO */>Item Title</Text>
+            <Text style={styles.itemTitleText}>{item.address}</Text>
           </View>
         </View>
       </TouchableOpacity>
     );
   }
+  
+
+
+  /*const { loading, error, fuck } = useQuery(housesQuery);
+
+  if (error) return `Error! ${error}`;
+
+  if (!loading) {
+    console.log(loading);
+    console.log(fuck);
+  }
+
+*/
+
+  //const { loading } = this.state;
+  //const { data } = this.props;
+
+
+  //if (loading) return null;
+
+
+  //return null;
 
   render() {
-    const { isLoadingComplete } = this.state;
-    const { data } = this.props;
-    if (isLoadingComplete) {
-      return (
-        <FlatList
-          data={data}
-          horizontal
-          renderItem={this.renderItem}
-        />  
-      );
-    }
+    return (
+      <Query query={housesQuery}>
+        {(response, error) => {
+          if (error) {
+            console.log('Response Error-------', error);
+            return <Text style={styles.errorText}>{error}</Text>
+          }
+          //If the response is done, then will return the FlatList
+          if (response) {
+            console.log('response-data-------------', response);
+            //Return the FlatList if there is not an error.
+            return <FlatList
+              horizontal
+              data={response.data.allHouses}
+              renderItem={(item) => this._renderItem(item)}
+            />;
+          }
+        }}
+      </Query>
+     
+    );
+  }
+  
+
+
+}
+const housesQuery = gql`
+{
+  allHouses{
+    address
   }
 }
+`;
 
-export default withNavigation(HouseList);
+export default HouseList;
 
 const styles = StyleSheet.create({
   itemContainer: {
-   flex: 1,
-   paddingTop: 5,
-   alignItems: 'center',
-   justifyContent: 'center',
+    flex: 1,
+    paddingTop: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   itemInfoContainer: {
     alignItems: 'center',

@@ -7,6 +7,35 @@ import { Ionicons } from '@expo/vector-icons';
 
 import AppNavigator from './navigation/AppNavigator';
 
+import { gql, ApolloClient, InMemoryCache, HttpLink } from "apollo-boost";
+
+import { ApolloProvider } from '@apollo/react-hooks';
+
+const cache = new InMemoryCache();
+const link = new HttpLink({
+  uri: 'https://api.graph.cool/simple/v1/ck1be1rlm18my01965s8rxc0v',
+});
+
+const client = new ApolloClient({
+  cache,
+  link,
+});
+
+
+client
+  .query({
+    query: gql`
+      {
+        allHouses {
+          id
+          address
+        }
+      }
+    `
+  })
+  .then(result => console.log(result));
+
+
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
 
@@ -20,10 +49,14 @@ export default function App(props) {
     );
   } else {
     return (
-      <View style={styles.container}>
-        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-        <AppNavigator />
-      </View>
+      <ApolloProvider client={client}>
+        <View style={styles.container}>
+          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+          <AppNavigator />
+        </View>
+
+      </ApolloProvider>
+
     );
   }
 }

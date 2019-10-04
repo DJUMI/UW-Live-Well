@@ -9,7 +9,7 @@ import {
 
 import { SearchBar, CheckBox } from 'react-native-elements';
 
-import MultiSlider from 'react-native-multi-slider';
+import MultiSlider from 'my-react-native-multi-slider';
 
 import HouseList from '../components/HouseList';
 

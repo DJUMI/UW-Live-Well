@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "UW-Live Well",
-    "slug": "UW-Live-Well",
+    "name": "UW-Live-Well-v2",
+    "slug": "uw-live-well-v2",
     "privacy": "public",
     "sdkVersion": "35.0.0",
     "platforms": [
