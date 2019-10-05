@@ -7,9 +7,10 @@ import { Ionicons } from '@expo/vector-icons';
 
 import AppNavigator from './navigation/AppNavigator';
 
-import { gql, ApolloClient, InMemoryCache, HttpLink } from "apollo-boost";
+import { gql, ApolloClient, InMemoryCache, HttpLink, ApolloLink } from "apollo-boost";
 
 import { ApolloProvider } from '@apollo/react-hooks';
+import { }
 
 const cache = new InMemoryCache();
 const link = new HttpLink({
@@ -20,21 +21,6 @@ const client = new ApolloClient({
   cache,
   link,
 });
-
-
-client
-  .query({
-    query: gql`
-      {
-        allHouses {
-          id
-          address
-        }
-      }
-    `
-  })
-  .then(result => console.log(result));
-
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);

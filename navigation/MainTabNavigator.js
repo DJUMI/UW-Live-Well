@@ -12,6 +12,7 @@ import EditProfileScreen from '../screens/EditProfileScreen';
 import AddHouseScreen from '../screens/AddHouseScreen';
 import HouseDetailScreen from '../screens/HouseDetailScreen.js';
 import CommentScreen from '../screens/CommentScreen';
+import EditHouseScreen from '../screens/EditHouseScreen';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -22,7 +23,7 @@ const HomeStack = createStackNavigator(
   {
     Home: HomeScreen,
     Detail: HouseDetailScreen,
-    CommentScreen,
+    comment: CommentScreen,
   },
   config
 );
@@ -41,6 +42,8 @@ const ProfileStack = createStackNavigator(
     Links: ProfileScreen,
     uDetail: UserHouseDetailScreen,
     editProfile: EditProfileScreen,
+    addHouse: AddHouseScreen,
+    editHouse: EditHouseScreen,
     addHouse: AddHouseScreen,
   },
   config
@@ -108,6 +111,24 @@ AddHouseScreen.navigationOptions = {
   },
 };
 
+EditHouseScreen.navigationOptions = {
+  title: 'editHouse',
+  headerStyle: {
+    backgroundColor: '#CAC4CE',
+  },
+  headerTitleStyle: {
+    color: '#CAC4CE',
+  },
+};
+
+const UserHouseDetailStack = createStackNavigator(
+  {
+    Links: UserHouseDetailScreen,
+    editHouse: EditHouseScreen,
+  },
+  config
+);
+
 UserHouseDetailScreen.navigationOptions = {
   title: 'uDetail',
   headerStyle: {
@@ -153,7 +174,14 @@ const tabNavigator = createBottomTabNavigator({
   LogInStack,
   SignUpStack,
   HouseDetailStack,
+  UserHouseDetailStack,
 });
+
+const NavWarpper = (props) => {
+  return <Login />
+  return <tabNavigator />
+
+}
 
 tabNavigator.path = '';
 

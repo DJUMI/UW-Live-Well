@@ -6,28 +6,17 @@ import {
     TouchableOpacity,
 } from 'react-native';
 
-import UserHouseList from '../components/UserHouseList';
+import UserHouseList from '../components/List/UserHouseList';
 
 import { withNavigation } from 'react-navigation';
 
 export default class ProfileScreen extends React.Component {
-    state = {
-        isLoadingComplete: true,
-    }
-
-    componentDidMount = async () => {
-        this.setState({
-            isLoadingComplete: true,
-        });
-    }
 
     render() {
         const { navigation, data } = this.props;
         return (
             <View style={styles.container}>
-
                 <View style={styles.infoContainer}>
-
                     <Text style={styles.info}>Username</Text>
 
                     <Text style={styles.info}>Profile Info</Text>
@@ -36,22 +25,16 @@ export default class ProfileScreen extends React.Component {
                         onPress={() => {
                             /* TODO: Navigate to the Details route with params */
                             navigation.navigate('editProfile', {/* props go here */ });
-                        }}>
+                    }}>
                         <Text style={styles.buttonText}>Edit Info</Text>
                     </TouchableOpacity>
-
                 </View>
 
                 <View style={styles.listContainer}>
-
                     <Text style={styles.listHeader}>Your Houses</Text>
 
                     <View style={styles.listContainer2}>
-                        <UserHouseList
-                            data={[
-                                { key: 'Devin' },
-                            ]}>
-                        </UserHouseList>
+                        <UserHouseList />
                     </View>
 
                     <TouchableOpacity style={styles.button2}
@@ -61,15 +44,11 @@ export default class ProfileScreen extends React.Component {
                         }}>
 
                         <Text style={styles.buttonText}>Add House</Text>
-
                     </TouchableOpacity>
-
                 </View>
-
             </View>
         );
     }
-
 }
 
 ProfileScreen.navigationOptions = {

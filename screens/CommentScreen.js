@@ -7,18 +7,73 @@ import {
     TouchableOpacity,
 } from 'react-native';
 
+import { Form, Item, Input, Label } from 'native-base';
+import { withNavigation } from 'react-navigation';
+import gql from 'graphql-tag';
+import { Mutation } from 'react-apollo';
+
+const addComment = gql`
+    mutation updateHouse($id: ID!, $comment: String!) {
+        updateHouse(id: $id, comment: $comment) {
+            id
+        }
+    }
+`
+
 export default class CommentScreen extends React.Component {
-    
+
+    constructor(props) {
+        super(props)
+        this.state = {
+          TextInputValue: ''
+        }
+    }
+
+    buttonClickListener = () =>{
+        TextInputValue = this.state ;
+        Alert.alert(TextInputValue);
+    }
+
     render() {
-        const {navigate} = this.props.navigation;
+        const { navigation } = this.props;
+        const { id } = { id: navigation.getParam('id') };
+        const { TextInputValue }  = this.state ;
+
         return (
-            <View style={styles.container}>
-                <TextInput style={styles.textInput} placeholder="Leave your comment here..."
-                placeholderTextColor='white' />
-                <TouchableOpacity style={styles.button}>
-                    <Text style={styles.buttonText}>Save</Text>  
-                </TouchableOpacity>
-            </View>
+            <Form style={styles.container}>
+                <Item floatingLabel>
+                    <Label style={styles.inputText}>
+                        Your comment
+                    </Label>
+                    <Input
+                        style={styles.inputText}
+                        onChangeText={TextInputValue => this.setState({TextInputValue})}
+                    />
+                </Item>
+
+                <Item style={styles.buttonContainer}>
+
+                    <Mutation mutation={addComment} variables={{ id: id, comment: TextInputValue }}>
+                        {addComment => (
+                            <TouchableOpacity
+                                style={styles.button}
+                                onPress={() => {
+                                    this.buttonClickListener;
+                                    addComment();
+                                    navigation.navigate('Detail', {
+                                        id: id,
+                                    });
+                                }}
+                            >
+                                <Text style={styles.buttonText}>Save</Text>
+                            </TouchableOpacity>
+
+                        )}
+
+                    </Mutation>
+                </Item>
+            </Form>
+
         );
     }
 }
@@ -28,15 +83,16 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'space-between',
         backgroundColor: '#36485f',
-        padding: 60
+        paddingTop: 10,
+        paddingHorizontal: 30,
+        paddingBottom: 40,
+        alignItems: 'center',
     },
-    textInput: {
-        alignSelf: 'stretch',
-        height: 40,
-        marginBottom: 30,
+    inputText: {
         color: 'white',
-        borderBottomColor: '#f8f8f8',
-        borderBottomWidth: 1,
+    },
+    buttonContainer: {
+        borderBottomWidth: 0,
     },
     button: {
         alignSelf: 'center',

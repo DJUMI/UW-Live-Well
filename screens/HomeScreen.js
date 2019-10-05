@@ -11,14 +11,14 @@ import { SearchBar, CheckBox } from 'react-native-elements';
 
 import MultiSlider from 'my-react-native-multi-slider';
 
-import HouseList from '../components/HouseList';
+import HouseList from '../components/List/HouseList';
 
 export default class HomeScreen extends React.Component {
 
   state = {
     sliderOneChanging: false,
     sliderOneValue: [5],
-    multiSliderValue: [3, 7],
+    multiSliderValue: [0, 3000],
     nonCollidingMultiSliderValue: [0, 100],
     search: '',
   };
@@ -70,17 +70,13 @@ export default class HomeScreen extends React.Component {
 
     return (
       <View style={styles.container}>
-
         <View style={styles.welcomeContainer}>
-
           <Text style={styles.welcomeText}>Welcome to UW Live Well!</Text>
-
         </View>
 
         <View style={styles.searchContainer}>
-
           <SearchBar
-            placeholder="City, Zip, Neighborhood"
+            placeholder="Address, Zip, Neighborhood"
             onChangeText={this.updateSearch}
             value={search}
             containerStyle={styles.searchBarContainer}
@@ -92,12 +88,10 @@ export default class HomeScreen extends React.Component {
             </TouchableOpacity>
           </View>
 
-
           <ScrollView
             scrollEnabled={this.state.scrollEnabled}
             style={styles.optionsContainer}
           >
-
             <View style={styles.roomContainer}>
               <CheckBox
                 title='Favorites Only'
@@ -116,11 +110,13 @@ export default class HomeScreen extends React.Component {
             </View>
 
             <Text style={styles.roomHeader}>Monthly Rent</Text>
+
             <View style={styles.sliderContainer}>
               <View style={styles.sliderTextContainer1}>
                 <Text style={styles.sliderText}>Min</Text>
                 <Text style={styles.sliderText}>{this.state.multiSliderValue[0]}</Text>
               </View>
+
               <MultiSlider
                 values={[
                   this.state.multiSliderValue[0],
@@ -136,6 +132,7 @@ export default class HomeScreen extends React.Component {
               //onValuesChangeStart={this.disableScroll}
               //onValuesChangeFinish={this.enableScroll}
               />
+
               <View style={styles.sliderTextContainer2}>
                 <Text style={styles.sliderText}>Max</Text>
                 {this.state.multiSliderValue[1] == 3000 ? <Text style={styles.sliderText}>3000+</Text> : <Text style={styles.sliderText}>{this.state.multiSliderValue[1]}</Text>}
@@ -145,7 +142,6 @@ export default class HomeScreen extends React.Component {
             <Text style={styles.roomHeader}>Available Rooms</Text>
 
             <View style={styles.roomContainer}>
-
               <CheckBox
                 title='1'
                 containerStyle={styles.roomBoxContainer1}
@@ -169,7 +165,6 @@ export default class HomeScreen extends React.Component {
             <Text style={styles.roomHeader}>Roomate Preference</Text>
 
             <View style={styles.roomContainer}>
-
               <CheckBox
                 title='Girls only'
                 containerStyle={styles.roomBoxContainer1}
@@ -196,7 +191,6 @@ export default class HomeScreen extends React.Component {
             <Text style={styles.roomHeader}>Pets Allowed</Text>
 
             <View style={styles.roomContainer}>
-
               <CheckBox
                 title='Yes'
                 containerStyle={styles.roomBoxContainer1}
@@ -219,21 +213,14 @@ export default class HomeScreen extends React.Component {
                 uncheckedColor='#6e8099'
               />
             </View>
-
           </ScrollView>
-
         </View>
 
         <View style={styles.listContainer}>
-
           <Text style={styles.listHeader}>Results</Text>
 
           <View style={styles.listContainer2}>
-            <HouseList
-              data={[
-                { key: 'Devin' },
-              ]}>
-            </HouseList>
+            <HouseList />
           </View>
         </View>
 
