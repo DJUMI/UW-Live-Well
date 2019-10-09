@@ -11,7 +11,10 @@ export const getToken = async () => {
 };
 
 export const signIn = newToken => {
-    return AsyncStorage.setItem('AUTH_TOKEN', newToken);
+    if (token) {
+        return AsyncStorage.setItem('AUTH_TOKEN', newToken);
+    }
+    return null;
 };
 
 export const signOut = newToken => {

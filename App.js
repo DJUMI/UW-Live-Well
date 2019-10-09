@@ -7,19 +7,32 @@ import { Ionicons } from '@expo/vector-icons';
 
 import AppNavigator from './navigation/AppNavigator';
 
-import { gql, ApolloClient, InMemoryCache, HttpLink, ApolloLink } from "apollo-boost";
+import { gql, ApolloClient, InMemoryCache, HttpLink } from "apollo-boost";
 
 import { ApolloProvider } from '@apollo/react-hooks';
-import { }
+import { setContext } from 'apollo-link-context';
+import { getToken } from './loginUtils';
 
-const cache = new InMemoryCache();
-const link = new HttpLink({
+const authLink = setContext(async (req, { headers }) => {
+  const token = await getToken();
+  //console.log(token);
+  return {
+    ...headers,
+    headers: {
+      authorization: token ? `Bearer ${token}` : null
+    }
+  };
+});
+
+const httpLink = new HttpLink({
   uri: 'https://api.graph.cool/simple/v1/ck1be1rlm18my01965s8rxc0v',
 });
 
+const link = authLink.concat(httpLink); 
+
 const client = new ApolloClient({
-  cache,
   link,
+  cache: new InMemoryCache()
 });
 
 export default function App(props) {

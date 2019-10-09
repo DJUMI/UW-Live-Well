@@ -16,6 +16,8 @@ import { signIn } from '../loginUtils';
 const signinUser = gql`
     mutation signinUser($email: String!, $password: String!) {
         signinUser(email: {email: $email, password: $password}) {
+            email,
+            password,
             token
         }
     }
@@ -79,7 +81,7 @@ class LogInScreen extends React.Component {
                                 style={styles.button}
                                 onPress={() => {
                                     signinUser();
-                                    signIn(signin.data.signinUser.token);
+                                
                                     /*navigation.navigate('Profile', {
                                         id: id
                                     });*/
